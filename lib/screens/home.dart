@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       body: PageView(
         controller: _pageController,
         physics: NeverScrollableScrollPhysics(),
-        children: <Widget>[PatientsScreen(), DoseScreen(), DrugsScreen()],
+        children: <Widget>[PatientsScreen(pageController: _pageController, tabController: _tabController), DoseScreen(), DrugsScreen()],
         scrollDirection: Axis.horizontal,
       )
     );
