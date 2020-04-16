@@ -18,7 +18,7 @@ class LineRangeAnnotationMarginChart extends StatelessWidget {
     return new LineRangeAnnotationMarginChart(
       _createSampleData(),
       // Disable animations for image tests.
-      animate: false,
+      animate: true,
     );
   }
 
@@ -40,7 +40,7 @@ class LineRangeAnnotationMarginChart extends StatelessWidget {
           // labels in the chart margins.
           new charts.RangeAnnotation([
             new charts.RangeAnnotationSegment(
-                0.5, 1.0, charts.RangeAnnotationAxisType.domain,
+                0.5, 2.0, charts.RangeAnnotationAxisType.domain,
                 startLabel: 'D1 Start',
                 endLabel: 'D1 End',
                 labelAnchor: charts.AnnotationLabelAnchor.end,
