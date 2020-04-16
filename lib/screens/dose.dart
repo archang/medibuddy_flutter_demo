@@ -449,7 +449,7 @@ class _DoseScreenState extends State<DoseScreen> with AutomaticKeepAliveClientMi
             ),
             Expanded(
               child: Card(
-                child: LineRangeAnnotationMarginChart.withSampleData()
+                child: TimeSeriesRangeAnnotationMarginChart.withSampleData()
               )
             )
           ]

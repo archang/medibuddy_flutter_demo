@@ -1,31 +1,76 @@
-/// Example of a line chart with range annotations configured to render labels
-/// in the chart margin area.
+// Copyright 2018 the Charts project authors. Please see the AUTHORS file
+// for details.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/// Example of a time series chart with range annotations configured to render
+/// labels in the chart margin area.
+// EXCLUDE_FROM_GALLERY_DOCS_START
+import 'dart:math';
+// EXCLUDE_FROM_GALLERY_DOCS_END
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
-class LineRangeAnnotationMarginChart extends StatelessWidget {
+class TimeSeriesRangeAnnotationMarginChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
 
-  LineRangeAnnotationMarginChart(this.seriesList, {this.animate});
+  TimeSeriesRangeAnnotationMarginChart(this.seriesList, {this.animate});
 
-  /// Creates a [LineChart] with sample data and range annotations.
-  ///
-  /// The second annotation extends beyond the range of the series data,
-  /// demonstrating the effect of the [Charts.RangeAnnotation.extendAxis] flag.
-  /// This can be set to false to disable range extension.
-  factory LineRangeAnnotationMarginChart.withSampleData() {
-    return new LineRangeAnnotationMarginChart(
+  /// Creates a [TimeSeriesChart] with sample data and no transition.
+  factory TimeSeriesRangeAnnotationMarginChart.withSampleData() {
+    return new TimeSeriesRangeAnnotationMarginChart(
       _createSampleData(),
       // Disable animations for image tests.
       animate: true,
     );
   }
-
+//
+//  // EXCLUDE_FROM_GALLERY_DOCS_START
+//  // This section is excluded from being copied to the gallery.
+//  // It is used for creating random series data to demonstrate animation in
+//  // the example app only.
+//  factory TimeSeriesRangeAnnotationMarginChart.withRandomData() {
+//    return new TimeSeriesRangeAnnotationMarginChart(_createRandomData());
+//  }
+//
+//  /// Create random data.
+//  static List<charts.Series<TimeSeriesSales, DateTime>> _createRandomData() {
+//    final random = new Random();
+//
+//    final data = [
+//      new TimeSeriesSales(new DateTime(2017, 9, 19), random.nextInt(100)),
+//      new TimeSeriesSales(new DateTime(2017, 9, 26), random.nextInt(100)),
+//      new TimeSeriesSales(new DateTime(2017, 10, 3), random.nextInt(100)),
+//      // Fix one of the points to 100 so that the annotations are consistently
+//      // placed.
+//      new TimeSeriesSales(new DateTime(2017, 10, 10), 100),
+//    ];
+//
+//    return [
+//      new charts.Series<TimeSeriesSales, DateTime>(
+//        id: 'Sales',
+//        domainFn: (TimeSeriesSales sales, _) => sales.time,
+//        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+//        data: data,
+//      )
+//    ];
+//  }
+//  // EXCLUDE_FROM_GALLERY_DOCS_END
 
   @override
   Widget build(BuildContext context) {
-    return new charts.LineChart(seriesList,
+    return new charts.TimeSeriesChart(seriesList,
         animate: animate,
 
         // Allow enough space in the left and right chart margins for the
@@ -39,54 +84,71 @@ class LineRangeAnnotationMarginChart extends StatelessWidget {
           // Define one domain and two measure annotations configured to render
           // labels in the chart margins.
           new charts.RangeAnnotation([
+//            new charts.RangeAnnotationSegment(
+//                new DateTime(2017, 10, 4),
+//                new DateTime(2017, 10, 15),
+//                charts.RangeAnnotationAxisType.domain,
+//                startLabel: 'D1 Start',
+//                endLabel: 'D1 End',
+//                labelAnchor: charts.AnnotationLabelAnchor.end,
+//                color: charts.MaterialPalette.gray.shade200,
+//                // Override the default vertical direction for domain labels.
+//                labelDirection: charts.AnnotationLabelDirection.horizontal),
+//            new charts.RangeAnnotationSegment(
+//                1, 2, charts.RangeAnnotationAxisType.measure,
+//                startLabel: 'M1 Start',
+//                endLabel: 'M1 End',
+//                labelAnchor: charts.AnnotationLabelAnchor.end,
+//                color: charts.MaterialPalette.gray.shade300),
             new charts.RangeAnnotationSegment(
-                0.5, 2.0, charts.RangeAnnotationAxisType.domain,
-                startLabel: 'D1 Start',
-                endLabel: 'D1 End',
-                labelAnchor: charts.AnnotationLabelAnchor.end,
-                color: charts.MaterialPalette.red.shadeDefault,
-                // Override the default vertical direction for domain labels.
-                labelDirection: charts.AnnotationLabelDirection.horizontal),
-            new charts.RangeAnnotationSegment(
-                15, 20, charts.RangeAnnotationAxisType.measure,
-                startLabel: 'M1 Start',
-                endLabel: 'M1 End',
-                labelAnchor: charts.AnnotationLabelAnchor.end,
-                color: charts.MaterialPalette.green.shadeDefault),
-            new charts.RangeAnnotationSegment(
-                35, 65, charts.RangeAnnotationAxisType.measure,
+                0, 0.01, charts.RangeAnnotationAxisType.measure,
                 startLabel: 'M2 Start',
                 endLabel: 'M2 End',
                 labelAnchor: charts.AnnotationLabelAnchor.start,
-                color: charts.MaterialPalette.yellow.shadeDefault),
+                color: charts.MaterialPalette.gray.shade300),
           ], defaultLabelPosition: charts.AnnotationLabelPosition.margin),
         ]);
   }
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<LinearSales, int>> _createSampleData() {
-    final data = [
-      new LinearSales(0, 5),
-      new LinearSales(1, 25),
-      new LinearSales(2, 100),
-      new LinearSales(3, 75),
-    ];
+  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+
+    var dataLength = 240;
+    var data = new List<TimeSeriesSales>(dataLength);
+    for(int i = 0; i < dataLength; i++) {
+      data[i] = new TimeSeriesSales(new DateTime.now().add(Duration(minutes:i)), exp(-i/120));
+    }
+//    final data = [
+//      new TimeSeriesSales(new DateTime.now().subtract(Duration(minutes:40)), 5),
+//      new TimeSeriesSales(new DateTime.now().subtract(Duration(minutes:30)), 6),
+//      new TimeSeriesSales(new DateTime.now().subtract(Duration(minutes:20)), 7),
+//      new TimeSeriesSales(new DateTime.now().subtract(Duration(minutes:10)), 8),
+//      new TimeSeriesSales(new DateTime.now().subtract(Duration(minutes:5)), 9),
+//      new TimeSeriesSales(new DateTime.now().subtract(Duration(minutes:2)), 10),
+//      new TimeSeriesSales(new DateTime.now().subtract(Duration(minutes:-2)), 12),
+//      new TimeSeriesSales(new DateTime.now().subtract(Duration(minutes:-20)), 2),
+//    ];
 
     return [
-      new charts.Series<LinearSales, int>(
+      new charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesSales sales, _) => sales.time,
+        measureFn: (TimeSeriesSales sales, _) => sales.sales,
         data: data,
       )
     ];
   }
 }
 
-/// Sample linear data type.
-class LinearSales {
-  final int year;
-  final int sales;
 
-  LinearSales(this.year, this.sales);
-}
+/// Sample time series data type.
+
+//int seriesLength = 240;
+
+class TimeSeriesSales {
+  final DateTime time;
+  final double sales;
+
+  TimeSeriesSales(this.time, this.sales);
+
+  }
