@@ -21,9 +21,11 @@ import 'dart:math';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
+
 class TimeSeriesRangeAnnotationMarginChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
+
 
   TimeSeriesRangeAnnotationMarginChart(this.seriesList, {this.animate});
 
@@ -35,6 +37,7 @@ class TimeSeriesRangeAnnotationMarginChart extends StatelessWidget {
       animate: true,
     );
   }
+
 //
 //  // EXCLUDE_FROM_GALLERY_DOCS_START
 //  // This section is excluded from being copied to the gallery.
@@ -112,12 +115,14 @@ class TimeSeriesRangeAnnotationMarginChart extends StatelessWidget {
 
   /// Create one series with sample hard coded data.
   static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
-
-    var dataLength = 240;
+    var dataLength = 720;
     var data = new List<TimeSeriesSales>(dataLength);
-    for(int i = 0; i < dataLength; i++) {
-      data[i] = new TimeSeriesSales(new DateTime.now().add(Duration(minutes:i)), exp(-i/120));
+    for (int i = 0; i < dataLength; i++) {
+      data[i] = new TimeSeriesSales(
+          new DateTime.now().add(Duration(minutes: i)),
+          -1.7142 * exp(-i / 60) - 0.005 * i + 1.7142);
     }
+
 //    final data = [
 //      new TimeSeriesSales(new DateTime.now().subtract(Duration(minutes:40)), 5),
 //      new TimeSeriesSales(new DateTime.now().subtract(Duration(minutes:30)), 6),
@@ -139,11 +144,6 @@ class TimeSeriesRangeAnnotationMarginChart extends StatelessWidget {
     ];
   }
 }
-
-
-/// Sample time series data type.
-
-//int seriesLength = 240;
 
 class TimeSeriesSales {
   final DateTime time;

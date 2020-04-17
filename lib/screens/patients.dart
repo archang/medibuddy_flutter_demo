@@ -9,6 +9,7 @@ class PatientsScreen extends StatefulWidget {
 
   @override
   _PatientsScreenState createState() => _PatientsScreenState();
+
 }
 
 class _PatientsScreenState extends State<PatientsScreen> with AutomaticKeepAliveClientMixin<PatientsScreen>{
@@ -42,6 +43,7 @@ class _PatientsScreenState extends State<PatientsScreen> with AutomaticKeepAlive
       "dosage": "None"
     }
   ];
+
 
   List<DataRow> loadData() {
     List<DataRow> data = [];
